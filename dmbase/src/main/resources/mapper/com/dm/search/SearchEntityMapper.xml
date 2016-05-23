@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.search.sqldao.SearchEntityMapper" >
+  <resultMap id="BaseResultMap" type="com.dm.search.model.SearchEntity" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="entity_name" property="entityName" jdbcType="VARCHAR" />
+    <result column="datasource" property="datasource" jdbcType="VARCHAR" />
+    <result column="table_name" property="tableName" jdbcType="VARCHAR" />
+    <result column="id_filed" property="idFiled" jdbcType="VARCHAR" />
+    <result column="title_filed" property="titleFiled" jdbcType="VARCHAR" />
+    <result column="url_filed" property="urlFiled" jdbcType="VARCHAR" />
+    <result column="author_filed" property="authorFiled" jdbcType="VARCHAR" />
+    <result column="content_filed" property="contentFiled" jdbcType="VARCHAR" />
+    <result column="channel_filed" property="channelFiled" jdbcType="VARCHAR" />
+    <result column="publishtime_filed" property="publishtimeFiled" jdbcType="VARCHAR" />
+    <result column="select_fileds" property="selectFileds" jdbcType="VARCHAR" />
+    <result column="left_join_tables" property="leftJoinTables" jdbcType="VARCHAR" />
+    <result column="on_fileds" property="onFileds" jdbcType="VARCHAR" />
+    <result column="where_filed" property="whereFiled" jdbcType="VARCHAR" />
+    <result column="transformer_html" property="transformerHtml" jdbcType="BIT" />
+    <result column="delta_query" property="deltaQuery" jdbcType="VARCHAR" />
+    <result column="query" property="query" jdbcType="VARCHAR" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, entity_name, datasource, table_name, id_filed, title_filed, url_filed, author_filed, 
+    content_filed, channel_filed, publishtime_filed, select_fileds, left_join_tables, 
+    on_fileds, where_filed, transformer_html, delta_query, query, pid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from search_entity
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="listByArg" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from search_entity
+    <where>
+			<if test="name!=null and name!=''">
+				and entity_name like concat("%",#{name},"%")
+			</if>
+			<if test="datasource!=null and datasource!=''">
+				and datasource =#{datasource}
+			</if>
+		</where>
+    order by id desc
+   </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from search_entity
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dm.search.model.SearchEntity" >
+    insert into search_entity (id, entity_name, datasource, 
+      table_name, id_filed, title_filed, 
+      url_filed, author_filed, content_filed, 
+      channel_filed, publishtime_filed, select_fileds, 
+      left_join_tables, on_fileds, where_filed, 
+      transformer_html, delta_query, query, 
+      pid)
+    values (#{id,jdbcType=INTEGER}, #{entityName,jdbcType=VARCHAR}, #{datasource,jdbcType=VARCHAR}, 
+      #{tableName,jdbcType=VARCHAR}, #{idFiled,jdbcType=VARCHAR}, #{titleFiled,jdbcType=VARCHAR}, 
+      #{urlFiled,jdbcType=VARCHAR}, #{authorFiled,jdbcType=VARCHAR}, #{contentFiled,jdbcType=VARCHAR}, 
+      #{channelFiled,jdbcType=VARCHAR}, #{publishtimeFiled,jdbcType=VARCHAR}, #{selectFileds,jdbcType=VARCHAR}, 
+      #{leftJoinTables,jdbcType=VARCHAR}, #{onFileds,jdbcType=VARCHAR}, #{whereFiled,jdbcType=VARCHAR}, 
+      #{transformerHtml,jdbcType=BIT}, #{deltaQuery,jdbcType=VARCHAR}, #{query,jdbcType=VARCHAR}, 
+      #{pid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dm.search.model.SearchEntity" >
+    insert into search_entity
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="entityName != null" >
+        entity_name,
+      </if>
+      <if test="datasource != null" >
+        datasource,
+      </if>
+      <if test="tableName != null" >
+        table_name,
+      </if>
+      <if test="idFiled != null" >
+        id_filed,
+      </if>
+      <if test="titleFiled != null" >
+        title_filed,
+      </if>
+      <if test="urlFiled != null" >
+        url_filed,
+      </if>
+      <if test="authorFiled != null" >
+        author_filed,
+      </if>
+      <if test="contentFiled != null" >
+        content_filed,
+      </if>
+      <if test="channelFiled != null" >
+        channel_filed,
+      </if>
+      <if test="publishtimeFiled != null" >
+        publishtime_filed,
+      </if>
+      <if test="selectFileds != null" >
+        select_fileds,
+      </if>
+      <if test="leftJoinTables != null" >
+        left_join_tables,
+      </if>
+      <if test="onFileds != null" >
+        on_fileds,
+      </if>
+      <if test="whereFiled != null" >
+        where_filed,
+      </if>
+      <if test="transformerHtml != null" >
+        transformer_html,
+      </if>
+      <if test="deltaQuery != null" >
+        delta_query,
+      </if>
+      <if test="query != null" >
+        query,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="entityName != null" >
+        #{entityName,jdbcType=VARCHAR},
+      </if>
+      <if test="datasource != null" >
+        #{datasource,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="idFiled != null" >
+        #{idFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="titleFiled != null" >
+        #{titleFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="urlFiled != null" >
+        #{urlFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="authorFiled != null" >
+        #{authorFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="contentFiled != null" >
+        #{contentFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="channelFiled != null" >
+        #{channelFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtimeFiled != null" >
+        #{publishtimeFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="selectFileds != null" >
+        #{selectFileds,jdbcType=VARCHAR},
+      </if>
+      <if test="leftJoinTables != null" >
+        #{leftJoinTables,jdbcType=VARCHAR},
+      </if>
+      <if test="onFileds != null" >
+        #{onFileds,jdbcType=VARCHAR},
+      </if>
+      <if test="whereFiled != null" >
+        #{whereFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="transformerHtml != null" >
+        #{transformerHtml,jdbcType=BIT},
+      </if>
+      <if test="deltaQuery != null" >
+        #{deltaQuery,jdbcType=VARCHAR},
+      </if>
+      <if test="query != null" >
+        #{query,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dm.search.model.SearchEntity" >
+    update search_entity
+    <set >
+      <if test="entityName != null" >
+        entity_name = #{entityName,jdbcType=VARCHAR},
+      </if>
+      <if test="datasource != null" >
+        datasource = #{datasource,jdbcType=VARCHAR},
+      </if>
+      <if test="tableName != null" >
+        table_name = #{tableName,jdbcType=VARCHAR},
+      </if>
+      <if test="idFiled != null" >
+        id_filed = #{idFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="titleFiled != null" >
+        title_filed = #{titleFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="urlFiled != null" >
+        url_filed = #{urlFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="authorFiled != null" >
+        author_filed = #{authorFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="contentFiled != null" >
+        content_filed = #{contentFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="channelFiled != null" >
+        channel_filed = #{channelFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="publishtimeFiled != null" >
+        publishtime_filed = #{publishtimeFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="selectFileds != null" >
+        select_fileds = #{selectFileds,jdbcType=VARCHAR},
+      </if>
+      <if test="leftJoinTables != null" >
+        left_join_tables = #{leftJoinTables,jdbcType=VARCHAR},
+      </if>
+      <if test="onFileds != null" >
+        on_fileds = #{onFileds,jdbcType=VARCHAR},
+      </if>
+      <if test="whereFiled != null" >
+        where_filed = #{whereFiled,jdbcType=VARCHAR},
+      </if>
+      <if test="transformerHtml != null" >
+        transformer_html = #{transformerHtml,jdbcType=BIT},
+      </if>
+      <if test="deltaQuery != null" >
+        delta_query = #{deltaQuery,jdbcType=VARCHAR},
+      </if>
+      <if test="query != null" >
+        query = #{query,jdbcType=VARCHAR},
+      </if>
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dm.search.model.SearchEntity" >
+    update search_entity
+    set entity_name = #{entityName,jdbcType=VARCHAR},
+      datasource = #{datasource,jdbcType=VARCHAR},
+      table_name = #{tableName,jdbcType=VARCHAR},
+      id_filed = #{idFiled,jdbcType=VARCHAR},
+      title_filed = #{titleFiled,jdbcType=VARCHAR},
+      url_filed = #{urlFiled,jdbcType=VARCHAR},
+      author_filed = #{authorFiled,jdbcType=VARCHAR},
+      content_filed = #{contentFiled,jdbcType=VARCHAR},
+      channel_filed = #{channelFiled,jdbcType=VARCHAR},
+      publishtime_filed = #{publishtimeFiled,jdbcType=VARCHAR},
+      select_fileds = #{selectFileds,jdbcType=VARCHAR},
+      left_join_tables = #{leftJoinTables,jdbcType=VARCHAR},
+      on_fileds = #{onFileds,jdbcType=VARCHAR},
+      where_filed = #{whereFiled,jdbcType=VARCHAR},
+      transformer_html = #{transformerHtml,jdbcType=BIT},
+      delta_query = #{deltaQuery,jdbcType=VARCHAR},
+      query = #{query,jdbcType=VARCHAR},
+      pid = #{pid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

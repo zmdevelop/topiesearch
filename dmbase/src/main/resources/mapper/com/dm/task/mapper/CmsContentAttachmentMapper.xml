@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.task.sqldao.CmsContentAttachmentMapper">
+	<resultMap id="BaseResultMap" type="com.dm.task.model.CmsContentAttachment">
+		<result column="content_id" property="contentId" jdbcType="INTEGER" />
+		<result column="attachment_id" property="attachmentId"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		content_id,attachment_id
+	</sql>
+	<insert id="insert" parameterType="com.dm.task.model.CmsContentAttachment">
+		insert into cms_content_attachment (content_id, attachment_id)
+		values (#{contentId,jdbcType=INTEGER}, #{attachmentId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.dm.task.model.CmsContentAttachment">
+		insert into cms_content_attachment
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="contentId != null">
+				content_id,
+			</if>
+			<if test="attachmentId != null">
+				attachment_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="contentId != null">
+				#{contentId,jdbcType=INTEGER},
+			</if>
+			<if test="attachmentId != null">
+				#{attachmentId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<select id="selectAttaList" resultMap="BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		from cms_content_attachment
+		where content_id = #{id}
+	</select>
+	<delete id="deleteAttaByContentId">
+		delete from cms_content_attachment where content_id = #{id}
+	</delete>
+</mapper>

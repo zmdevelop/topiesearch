@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.task.sqldao.TaskCmsChannelMapper" >
+  <resultMap id="BaseResultMap" type="com.dm.task.model.CmsChannel" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="display_name" property="displayName" jdbcType="VARCHAR" />
+    <result column="en_name" property="enName" jdbcType="VARCHAR" />
+    <result column="site_id" property="siteId" jdbcType="INTEGER" />
+    <result column="site_domain" property="siteDomain" jdbcType="VARCHAR" />
+    <result column="forbidden" property="forbidden" jdbcType="VARCHAR" />
+    <result column="template_id" property="templateId" jdbcType="INTEGER" />
+    <result column="is_html" property="isHtml" jdbcType="BIT" />
+    <result column="seq" property="seq" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="create_user" property="createUser" jdbcType="INTEGER" />
+    <result column="update_time" property="updateTime" jdbcType="TIMESTAMP" />
+    <result column="page_size" property="pageSize" jdbcType="INTEGER" />
+    <result column="url" property="url" jdbcType="VARCHAR" />
+    <result column="channel_type" property="channelType" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, pid, display_name, en_name, site_id, site_domain, forbidden, template_id, is_html, 
+    seq, create_time, create_user, update_time, page_size, url, channel_type
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_channel
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from cms_channel
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.dm.task.model.CmsChannel" >
+    insert into cms_channel (id, pid, display_name, 
+      en_name, site_id, site_domain, 
+      forbidden, template_id, is_html, 
+      seq, create_time, create_user, 
+      update_time, page_size, url, 
+      channel_type)
+    values (#{id,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER}, #{displayName,jdbcType=VARCHAR}, 
+      #{enName,jdbcType=VARCHAR}, #{siteId,jdbcType=INTEGER}, #{siteDomain,jdbcType=VARCHAR}, 
+      #{forbidden,jdbcType=VARCHAR}, #{templateId,jdbcType=INTEGER}, #{isHtml,jdbcType=BIT}, 
+      #{seq,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{createUser,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP}, #{pageSize,jdbcType=INTEGER}, #{url,jdbcType=VARCHAR}, 
+      #{channelType,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dm.task.model.CmsChannel" >
+    insert into cms_channel
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="displayName != null" >
+        display_name,
+      </if>
+      <if test="enName != null" >
+        en_name,
+      </if>
+      <if test="siteId != null" >
+        site_id,
+      </if>
+      <if test="siteDomain != null" >
+        site_domain,
+      </if>
+      <if test="forbidden != null" >
+        forbidden,
+      </if>
+      <if test="templateId != null" >
+        template_id,
+      </if>
+      <if test="isHtml != null" >
+        is_html,
+      </if>
+      <if test="seq != null" >
+        seq,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUser != null" >
+        create_user,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+      <if test="pageSize != null" >
+        page_size,
+      </if>
+      <if test="url != null" >
+        url,
+      </if>
+      <if test="channelType != null" >
+        channel_type,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="displayName != null" >
+        #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null" >
+        #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null" >
+        #{siteId,jdbcType=INTEGER},
+      </if>
+      <if test="siteDomain != null" >
+        #{siteDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="forbidden != null" >
+        #{forbidden,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        #{templateId,jdbcType=INTEGER},
+      </if>
+      <if test="isHtml != null" >
+        #{isHtml,jdbcType=BIT},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageSize != null" >
+        #{pageSize,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null" >
+        #{channelType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dm.task.model.CmsChannel" >
+    update cms_channel
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="displayName != null" >
+        display_name = #{displayName,jdbcType=VARCHAR},
+      </if>
+      <if test="enName != null" >
+        en_name = #{enName,jdbcType=VARCHAR},
+      </if>
+      <if test="siteId != null" >
+        site_id = #{siteId,jdbcType=INTEGER},
+      </if>
+      <if test="siteDomain != null" >
+        site_domain = #{siteDomain,jdbcType=VARCHAR},
+      </if>
+      <if test="forbidden != null" >
+        forbidden = #{forbidden,jdbcType=VARCHAR},
+      </if>
+      <if test="templateId != null" >
+        template_id = #{templateId,jdbcType=INTEGER},
+      </if>
+      <if test="isHtml != null" >
+        is_html = #{isHtml,jdbcType=BIT},
+      </if>
+      <if test="seq != null" >
+        seq = #{seq,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createUser != null" >
+        create_user = #{createUser,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageSize != null" >
+        page_size = #{pageSize,jdbcType=INTEGER},
+      </if>
+      <if test="url != null" >
+        url = #{url,jdbcType=VARCHAR},
+      </if>
+      <if test="channelType != null" >
+        channel_type = #{channelType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.dm.task.model.CmsChannel" >
+    update cms_channel
+    set pid = #{pid,jdbcType=INTEGER},
+      display_name = #{displayName,jdbcType=VARCHAR},
+      en_name = #{enName,jdbcType=VARCHAR},
+      site_id = #{siteId,jdbcType=INTEGER},
+      site_domain = #{siteDomain,jdbcType=VARCHAR},
+      forbidden = #{forbidden,jdbcType=VARCHAR},
+      template_id = #{templateId,jdbcType=INTEGER},
+      is_html = #{isHtml,jdbcType=BIT},
+      seq = #{seq,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_user = #{createUser,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      page_size = #{pageSize,jdbcType=INTEGER},
+      url = #{url,jdbcType=VARCHAR},
+      channel_type = #{channelType,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectAddData" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from cms_channel
+    where create_time &gt;= #{createTime,jdbcType=TIMESTAMP}
+    and create_time
+		&lt;
+		date_sub(#{createTime,jdbcType=TIMESTAMP},interval -1 day)
+  </select>
+  <select id="selectUpdateData" resultMap="BaseResultMap" >
+    select 
+    <include refid="Base_Column_List" />
+    from cms_channel
+    where create_time &lt; #{createTime,jdbcType=TIMESTAMP} and update_time &gt;= #{updateTime,jdbcType=TIMESTAMP}
+  </select>
+</mapper>

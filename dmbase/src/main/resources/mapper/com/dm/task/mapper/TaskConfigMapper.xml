@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dm.task.sqldao.TaskConfigMapper" >
+  <resultMap id="BaseResultMap" type="com.dm.task.model.TaskConfig" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="is_keywords" property="isKeywords" jdbcType="BIT" />
+    <result column="keywords" property="keywords" jdbcType="VARCHAR" />
+    <result column="is_visited" property="isVisited" jdbcType="BIT" />
+    <result column="channel_ids" property="channelIds" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, is_keywords, keywords, is_visited, channel_ids
+  </sql>
+  <insert id="insert" parameterType="com.dm.task.model.TaskConfig" >
+    insert into task_config (id, is_keywords, keywords, 
+      is_visited, channel_ids)
+    values (#{id,jdbcType=VARCHAR}, #{isKeywords,jdbcType=BIT}, #{keywords,jdbcType=VARCHAR}, 
+      #{isVisited,jdbcType=BIT}, #{channelIds,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.dm.task.model.TaskConfig" >
+    insert into task_config
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="isKeywords != null" >
+        is_keywords,
+      </if>
+      <if test="keywords != null" >
+        keywords,
+      </if>
+      <if test="isVisited != null" >
+        is_visited,
+      </if>
+      <if test="channelIds != null" >
+        channel_ids,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="isKeywords != null" >
+        #{isKeywords,jdbcType=BIT},
+      </if>
+      <if test="keywords != null" >
+        #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="isVisited != null" >
+        #{isVisited,jdbcType=BIT},
+      </if>
+      <if test="channelIds != null" >
+        #{channelIds,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.dm.task.model.TaskConfig" >
+    update task_config
+    <set >
+      <if test="isKeywords != null" >
+        is_keywords = #{isKeywords,jdbcType=BIT},
+      </if>
+      <if test="keywords != null" >
+        keywords = #{keywords,jdbcType=VARCHAR},
+      </if>
+      <if test="isVisited != null" >
+        is_visited = #{isVisited,jdbcType=BIT},
+      </if>
+      <if test="channelIds != null" >
+        channel_ids = #{channelIds,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=VARCHAR}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from task_config
+    where id = #{id,jdbcType=VARCHAR}
+  </select>
+</mapper>
