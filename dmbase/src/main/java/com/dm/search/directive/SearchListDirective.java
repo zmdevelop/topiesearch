@@ -1,7 +1,6 @@
 package com.dm.search.directive;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,13 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 
-import com.dm.cms.model.CmsContent;
-import com.dm.cms.model.CmsNovel;
-import com.dm.cms.service.CmsNovelService;
-import com.dm.cms.util.PageUtil;
 import com.dm.search.model.SearchResult;
 import com.dm.search.service.SearchConfigService;
-import com.github.pagehelper.PageInfo;
 
 import freemarker.core.Environment;
 import freemarker.template.ObjectWrapper;

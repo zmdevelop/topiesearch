@@ -25,13 +25,10 @@ import com.dm.platform.dao.CommonDAO;
 import com.dm.platform.model.LogEntity;
 import com.dm.platform.model.UserAccount;
 import com.dm.platform.util.DmDateUtil;
-import com.dm.webservice.SynInfoService;
 
 public class AjaxAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
     @Resource CommonDAO commonDAO;
     
-    @Resource 
-    SynInfoService synInfoService;
 
     public AjaxAuthenticationSuccessHandler() {
     }

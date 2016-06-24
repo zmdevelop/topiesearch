@@ -11,7 +11,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.dm.cms.sqldao.CmsUserGroupMapper;
 import com.dm.platform.dao.CommonDAO;
 import com.dm.platform.model.UserAccount;
 import com.dm.platform.service.UserAccountService;
@@ -25,8 +24,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 	private CommonDAO commonDAO;
 	@Resource
 	private SqlSessionTemplate sqlSession;
-	@Autowired
-	private CmsUserGroupMapper cmsUserGroupMapper;
 
 
 	@Override
@@ -80,7 +77,6 @@ public class UserAccountServiceImpl implements UserAccountService {
 		List list = new ArrayList<String>();
 		list.add(entity.getCode());
 		map.put("userId", list);
-		cmsUserGroupMapper.deleteGroupUser(map);
 		
 	}
 
