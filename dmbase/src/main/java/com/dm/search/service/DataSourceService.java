@@ -1,5 +1,6 @@
 package com.dm.search.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.dm.search.model.SearchDataSource;
@@ -15,5 +16,10 @@ public interface DataSourceService {
 	SearchDataSource load(Integer id);
 	
 	PageInfo<SearchDataSource> list(Integer pageSize,Integer PageNum,Map searchMap);
+
+	SearchDataSource loadByName(String dataSourceName);
+
+	List<SearchDataSource> listAll(Map map);
+
 	 
 }

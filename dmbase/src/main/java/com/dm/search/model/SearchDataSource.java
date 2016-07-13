@@ -5,14 +5,14 @@ import java.util.List;
 
 public class SearchDataSource {
 	// {typeflag , type , driver , datasourcestyleflag , processor} 
-	public static final String[] t_mysql = { "MYSQL", "JdbcDataSource","com.mysql.jdbc.Driver","1","" };
-	public static final String[] t_oracle = { "ORACLE", "JdbcDataSource","oracle.jdbc.driver.OracleDriver","1","" };
-	public static final String[] t_sqlServer ={"SQLSERVER", "com.microsoft.sqlserver.jdbc.SQLServerDriver","com.microsoft.sqlserver.jdbc.SQLServerDriver","1",""};
-	public static final String[] t_db2 = { "DB2", "JdbcDataSource","com.ibm.db2.jcc.DB2Driver","1" ,""};
-	public static final String[] t_url_word = { "URLWDOC", "URLDataSource","","2","TikaEntityProcessor" };
-	public static final String[] t_word = { "DOC", "BinFileDataSource","" ,"3","TikaEntityProcessor"};
-	public static final String[] t_pdf = { "PDF", "BinFileDataSource","","3" ,"TikaEntityProcessor"};
-	public static List<String[]> typeList=new ArrayList<String[]>();;
+	public static final String[] t_mysql = { "MYSQL", "JdbcDataSource","com.mysql.jdbc.Driver","1","" ,"jdbc:mysql://${address}:3306/${database}"};
+	public static final String[] t_oracle = { "ORACLE", "JdbcDataSource","oracle.jdbc.driver.OracleDriver","1","" ,"jdbc:oracle:thin:@${address}:1521:${database}"};
+	public static final String[] t_sqlServer ={"SQLSERVER", "JdbcDataSource","com.microsoft.sqlserver.jdbc.SQLServerDriver","1","","jdbc:sqlserver://${address}:1433;DatabaseName=${database}"};
+	public static final String[] t_db2 = { "DB2", "JdbcDataSource","com.ibm.db2.jcc.DB2Driver","1" ,"",""};
+	public static final String[] t_url_word = { "URLWDOC", "URLDataSource","","2","TikaEntityProcessor","" };
+	public static final String[] t_word = { "DOC", "BinFileDataSource","" ,"3","TikaEntityProcessor",""};
+	public static final String[] t_pdf = { "PDF", "BinFileDataSource","","3" ,"TikaEntityProcessor",""};
+	public static List<String[]> typeList=new ArrayList<String[]>();
 	{
 		typeList.add(t_oracle);
 		typeList.add(t_db2);
@@ -44,9 +44,28 @@ public class SearchDataSource {
     private String style;
     
     private String processor;
-
     
-    public String getProcessor() {
+    private String address;
+    
+    private String database;
+    
+    public String getDatabase() {
+		return database;
+	}
+
+	public void setDatabase(String database) {
+		this.database = database;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getProcessor() {
     	for(String[] arr:typeList){
     		if(arr[0].equals(type)){
     			processor = arr[4];
@@ -129,7 +148,17 @@ public class SearchDataSource {
     }
 
     public String getUrl() {
-        return url;
+    	for(String[] arr:typeList){
+    		if(arr[0].equals(type)){
+    			url = arr[5];
+    			if(url.equals(""))
+    				return "";
+    			break;
+    		}
+    	}
+    	url =url.replace("${address}", address==null?"":address);
+    	url =url.replace("${database}", database==null?"":database);
+    	return url;
     }
 
     public void setUrl(String url) {

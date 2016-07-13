@@ -24,30 +24,30 @@
 			query="${entity.query}"
 			deltaQuery="${entity.deltaQuery}"
 			deltaImportQuery="${entity.deltaImportQuery}" >
-			<field column="id" name="id" />
-			<field column="title" name="title" />
+			<field column="${entity.idFiled}" name="id" />
+			<field column="${entity.titleFiled}" name="title" />
 			<#if entity.publishtimeFiled != null>
-			<field column="publishDate" name="publishDate" />
+			<field column="${entity.publishtimeFiled}" name="publishDate" />
 			</#if>
 			<#if entity.authorFiled != null>
-			 <field column="origin" name="origin" />
+			 <field column="${entity.authorFiled}" name="origin" />
 			</#if>
 			<#if entity.channelFiled != null>
-			<field column="displayName" name="displayName" />
+			<field column="${entity.channelFiled}" name="displayName" />
 			</#if>
 			<#if entity.contentFiled!=null>
-			<field column="content" name="content" <#if entity.transformerHtml==true > stripHTML="true" regex="[/ \t\n\r]" replaceWith="" </#if>/>
+			<field column="${entity.contentFiled}" name="content" <#if entity.transformerHtml==true > stripHTML="true" regex="[/ \t\n\r]" replaceWith="" </#if>/>
 			</#if>
 			<#list entitys as entity2>
 				<#if entity.id==entity2.pid>
 				<entity name="${entity2.entityName}" dataSource="${entity2.datasource}" 
-					processor="${entity2.processor!'TikaEntityProcessor'}" onError = "Skip" url="${r"${"}${entity.entityName+'.url'}" format="text" >
+					processor="${entity2.processor!'TikaEntityProcessor'}" onError = "Skip" url="${r"${"}${entity.entityName+'.'+entity2.urlFiled}}" format="text" >
 					<field column="text" name="content"  meta="true" />
 					<!--<field column="Author" name="origin" meta="true" />-->
 				</entity>
 				</#if>
 			</#list>
-			<field column="url" name="url" />
+			<field column="${entity.urlFiled}" name="url" />
 			
 		</entity>
 		</#if>

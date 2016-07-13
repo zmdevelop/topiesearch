@@ -19,8 +19,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.dm.platform.util.ResponseUtil;
 import com.dm.search.model.SearchConfig;
+import com.dm.search.model.SearchEntity;
+import com.dm.search.service.EntityService;
 import com.dm.search.service.SearchConfigService;
-import com.dm.search.sqldao.DatabaseMapper;
 /**
  * @描述   搜索配置controller
  * @作者 dyt
@@ -35,8 +36,8 @@ public class SearchController {
 	
 	@Autowired
 	SearchConfigService searchConfigService;
-	
-	
+	@Autowired
+	EntityService entityService;
 	
 	
 	/**
@@ -92,14 +93,19 @@ public class SearchController {
 			@RequestParam(required=false,value="sortField",defaultValue="publishDate")String sortField,
 			@RequestParam(required=false,value="titleValue")String titleValue,
 			@RequestParam(required=false,value="contentValue")String contentValue,
-			@RequestParam(required=false,value="entity",defaultValue="cmsContent")String entity,
+			@RequestParam(required=false,value="entity")String entity,
 			ModelAndView model,Device device)
     {
 		pageNum = pageNum==null?1:pageNum;
 		pageSize = pageSize==null?10:pageSize;
 		long totalPage = 0;
+		Map searchMap = new HashMap<>();
+		searchMap.put("status", "1");
+		List<SearchEntity> entityList = entityService.list( searchMap);
+		model.addObject("entityList", entityList);
+		model.addObject("entity",entity);
 		if(textValue==null || textValue.equals(""))
-		{
+		{	
 			model.setViewName("/search/search-view");
 			return model; 
 		}
@@ -131,10 +137,11 @@ public class SearchController {
 			@RequestParam(required=false,value="pageSize",defaultValue="5")Integer pageSize,
 			@RequestParam(required=false,value="days")Integer days,
 			@RequestParam(required=false,value="sortField")String sortField,
-			@RequestParam(required=false,value="entity",defaultValue="cmsContent")String entity,
+			@RequestParam(required=false,value="entity")String entity,
 			Device device)
     {
 		Map map = new HashMap();
+		
 		if(textValue==null || textValue.equals(""))
 		{
 			map.put("status",0);

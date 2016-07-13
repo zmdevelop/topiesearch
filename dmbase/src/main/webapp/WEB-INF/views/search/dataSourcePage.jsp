@@ -114,12 +114,16 @@
 				field : "type",
 				width : "15%"
 			},{
-				title : "url",
-				field : "url",
-				width : "30%"
+				title : "地址",
+				field : "address",
+				width : "20%"
+			},{
+				title : "数据库",
+				field : "database",
+				width : "20%"
 			} ],
 			actionCloumText : "操作",//操作列文本
-			actionCloumWidth : "10%",
+			actionCloumWidth : "20%",
 			actionCloums : [
 					  {
 						text : "编辑",
@@ -266,9 +270,9 @@
 					}
 				},{
 					type : 'text',//类型
-					name : 'url',//name
-					id : 'url',//id
-					label : '数据库地址',//左边label
+					name : 'address',//name
+					id : 'address',//id
+					label : '数据库IP',//左边label
 					cls : 'input-large',
 					rule : {
 						required : true
@@ -277,6 +281,18 @@
 						required : "请输入"
 					}	
 			},{
+				type : 'text',//类型
+				name : 'database',//name
+				id : 'database',//id
+				label : '数据库',//左边label
+				cls : 'input-large',
+				rule : {
+					required : true
+				},
+				message : {
+					required : "请输入"
+				}	
+		},{
 				type : 'select',
 				name : 'type',
 				id : 'type',

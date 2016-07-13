@@ -19,4 +19,6 @@ public interface SearchDataSourceMapper {
     int updateByPrimaryKey(SearchDataSource record);
 
 	List<SearchDataSource> listByArg(Map searchMap);
+
+	SearchDataSource selectByAddress(String address);
 }

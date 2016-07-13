@@ -21,11 +21,12 @@
     <result column="delta_query" property="deltaQuery" jdbcType="VARCHAR" />
     <result column="query" property="query" jdbcType="VARCHAR" />
     <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="status" property="status" jdbcType="VARCHAR"/>
   </resultMap>
   <sql id="Base_Column_List" >
     id, entity_name, datasource, table_name, id_filed, title_filed, url_filed, author_filed, 
     content_filed, channel_filed, publishtime_filed, select_fileds, left_join_tables, 
-    on_fileds, where_filed, transformer_html, delta_query, query, pid
+    on_fileds, where_filed, transformer_html, delta_query, query, pid ,status 
   </sql>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
     select 
@@ -44,6 +45,9 @@
 			<if test="datasource!=null and datasource!=''">
 				and datasource =#{datasource}
 			</if>
+			<if test="status!=null and status!=''">
+				and status =#{status}
+			</if>
 		</where>
     order by id desc
    </select>
@@ -59,14 +63,14 @@
       channel_filed, publishtime_filed, select_fileds, 
       left_join_tables, on_fileds, where_filed, 
       transformer_html, delta_query, query, 
-      pid)
+      pid,status)
     values (#{id,jdbcType=INTEGER}, #{entityName,jdbcType=VARCHAR}, #{datasource,jdbcType=VARCHAR}, 
       #{tableName,jdbcType=VARCHAR}, #{idFiled,jdbcType=VARCHAR}, #{titleFiled,jdbcType=VARCHAR}, 
       #{urlFiled,jdbcType=VARCHAR}, #{authorFiled,jdbcType=VARCHAR}, #{contentFiled,jdbcType=VARCHAR}, 
       #{channelFiled,jdbcType=VARCHAR}, #{publishtimeFiled,jdbcType=VARCHAR}, #{selectFileds,jdbcType=VARCHAR}, 
       #{leftJoinTables,jdbcType=VARCHAR}, #{onFileds,jdbcType=VARCHAR}, #{whereFiled,jdbcType=VARCHAR}, 
       #{transformerHtml,jdbcType=BIT}, #{deltaQuery,jdbcType=VARCHAR}, #{query,jdbcType=VARCHAR}, 
-      #{pid,jdbcType=INTEGER})
+      #{pid,jdbcType=INTEGER},#{status,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.dm.search.model.SearchEntity" >
     insert into search_entity
@@ -128,6 +132,9 @@
       <if test="pid != null" >
         pid,
       </if>
+      <if test="status != null">
+      	status,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
       <if test="id != null" >
@@ -186,6 +193,9 @@
       </if>
       <if test="pid != null" >
         #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+      	 #{status,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -246,6 +256,9 @@
       <if test="pid != null" >
         pid = #{pid,jdbcType=INTEGER},
       </if>
+      <if test="status != null">
+      	status=#{status,jdbcType=VARCHAR},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -268,7 +281,8 @@
       transformer_html = #{transformerHtml,jdbcType=BIT},
       delta_query = #{deltaQuery,jdbcType=VARCHAR},
       query = #{query,jdbcType=VARCHAR},
-      pid = #{pid,jdbcType=INTEGER}
+      pid = #{pid,jdbcType=INTEGER},
+      status=#{status,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

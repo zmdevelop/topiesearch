@@ -48,9 +48,16 @@
 			font-size: 22px;
 			font-weight: normal;
 			}
-			.newslist {
-			margin: 6px 0 0 0;
-			}
+		.newslist {
+		margin: 6px 0 0 0;
+		}
+		.row label{
+			font-size: small;
+			margin: 5px 0 0 15px;
+			font-family: Microsoft YaHei, Simsum, serif;
+			font-weight: normal;
+		}
+		
     </style>
 </head>
 <!-- Head END -->
@@ -86,7 +93,14 @@
 						    <input type="text" class="form-control" style="width: 800px;" name="textValue" value="${textValue }" placeholder="关键字" >
 						    <input type="hidden" name="pageNum" value="1"/>
 						    <input type="hidden" name="pageSize" value="10">
-						  <button type="submit" class="btn green btn-primary">搜索</button></div>
+						  	<button type="submit" class="btn green btn-primary">搜索</button>
+						  </div>
+						  <div class="row" >
+						  <label> <input type="radio" name="entity" value="" checked="checked">全部</label>
+						   <c:forEach  items="${entityList}" var="item"> 
+						  	<label> <input type="radio" name="entity"  ${entity==item.entityName?"checked":"" } value="${item.entityName }">${item.entityName }</label>
+						  	</c:forEach>
+						  </div>
 					</form>
 					</div>
 				</div>

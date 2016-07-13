@@ -84,6 +84,28 @@
                 }
             });
         },
+        loadDataRemote: function (element,ajaxUrl, callback) {
+            var that = this;
+            var optionTmpl = '<option value=${value_} ${selected}>${text_}</option>';
+            var ele = $("#"+element);
+            ele.html('<option>请选择</option>');
+            $.ajax({
+                type: "POST",
+                dataType: "json",
+                url: ajaxUrl,
+                success: function (options) {
+                    $.each(options, function (i, option) {
+                        var opt = $.tmpl(optionTmpl, {
+                            "value_": option.value,
+                            "text_": option.text,
+                            "selected": (option.selected ? "selected"
+                                : "")
+                        });
+                        ele.append(opt);
+                    });
+                }
+            });
+        },
         setAction: function (action) {
             this._action = action;
         },
@@ -420,7 +442,7 @@
                 return ele;
             },
             'select': function (data, form) {
-                var selectTmpl = '<select id="${id_}" name="${name_}" ${attribute_} ${disabled_} class="form-control ${cls_}"></select>';
+                var selectTmpl = '<select id="${id_}" name="${name_}" ${multiple_} ${attribute_} ${disabled_} class="form-control ${cls_}"></select>';
                 var optionTmpl = '<option value=${value_} ${selected}>${text_}</option>';
                 var ele = $.tmpl(selectTmpl, {
                     "id_": (data.id == undefined ? data.name : data.id),
@@ -428,7 +450,8 @@
                     "cls_": data.cls == undefined ? "" : data.cls,
                     "disabled_": (data.disabled ? "disabled" : ""),
                     "attribute_": (data.attribute == undefined ? ""
-                        : data.attribute)
+                        : data.attribute),
+                        "multiple_":data.multiple?"multiple='multiple'":""
                 });
                 $.each(data.items, function (i, option) {
                     var opt = $.tmpl(optionTmpl, {
@@ -456,6 +479,11 @@
                             });
                         }
                     });
+                }
+                if(data.handle){
+	                ele.on("change", function () {
+	                	data.handle(ele);
+	                });
                 }
                 return ele;
             },

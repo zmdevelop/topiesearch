@@ -1,5 +1,6 @@
 package com.dm.search.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,6 +53,23 @@ public class DataSourceServiceImpl implements DataSourceService {
 		List<SearchDataSource> list = this.dataSourceMapper.listByArg(searchMap);
 		PageInfo<SearchDataSource> page = new PageInfo<SearchDataSource>(list);
 		return page;
+	}
+
+	@Override
+	public SearchDataSource loadByName(String dataSourceName) {
+		Map searchMap = new HashMap();
+		searchMap.put("name",dataSourceName);
+		List<SearchDataSource> list = this.dataSourceMapper.listByArg(searchMap);
+		if(list.size()>0){
+			return list.get(0);
+		}
+		return null;
+	}
+
+	@Override
+	public List<SearchDataSource> listAll(Map searchMap) {
+		List<SearchDataSource> list = this.dataSourceMapper.listByArg(searchMap);
+		return list;
 	}
 
 }

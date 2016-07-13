@@ -108,19 +108,43 @@
 			cloums : [ {
 				title : "名称",
 				field : "entityName",
-				width : "20%"
+				width : "10%"
 			}, {
 				title : "数据源",
 				field : "datasource",
-				width : "20%"
+				width : "15%"
 			}, {
 				title : "数据表",
 				field : "tableName",
-				width : "30%"
+				width : "15%"
+			}, {
+				title : "启用状态",
+				field : "status",
+				width : "15%",
+				format:function(index,data){
+					if(data.status=='0'){
+						return '<font color="red">已禁用</font>';
+					}
+					return '<font color="green">已启用</font>';
+				}
 			} ],
 			actionCloumText : "操作",//操作列文本
-			actionCloumWidth : "10%",
-			actionCloums : [ {
+			actionCloumWidth : "20%",
+			actionCloums : [ 
+			                   {
+				text : "查看",
+				cls : "green btn-sm",
+				handle : function(index, data) {
+					modal = $.dmModal({
+						id : "siteForm",
+						title : "查看",
+						distroy : true
+					});
+					modal.$body.load("./showInfo?id="+data.id);
+					setTimeout("modal.show();",300);
+					
+				}
+			},/* {
 				text : "编辑",
 				cls : "green btn-sm",
 				handle : function(index, data) {
@@ -131,12 +155,28 @@
 					});
 					modal.show();
 					if(data.deltaQuery=="1"){
-						var form = modal.$body.dmForm(form_file_Opts);
+						form = modal.$body.dmForm(form_file_Opts);
 						form.loadRemote("./load?id=" + data.id);
 					}else{
-						var form = modal.$body.dmForm(formOpts);
+						form = modal.$body.dmForm(formOpts);
 						form.loadRemote("./load?id=" + data.id);
 					}
+				}
+			},*/{
+				textHandle :function(index,data){
+					if(data.status=='1'){
+						return "禁用";
+					}
+					return "启用";
+				},
+				clsHandle :function(i,d){
+					if(d.status=='1'){
+						return "yellow btn-sm";
+					}
+					return "green btn-sm";	
+				},
+				handle:function(index,data){
+					updateStatus(data.id, data.status );
 				}
 			}, {
 				text : "删除",
@@ -154,8 +194,9 @@
 						title : "添加",
 						distroy : true
 					});
-					modal.show();
-					var form = modal.$body.dmForm(formOpts);
+					modal.$body.load("./addpage");
+					setTimeout("modal.show();",300);
+					//form = modal.$body.dmForm(formOpts);
 				}
 			}, {
 				text : "添加附件类型",
@@ -166,9 +207,8 @@
 						title : "添加",
 						distroy : true
 					});
-					modal.show();
-					var form = modal.$body.dmForm(form_file_Opts);
-					form.loadLocal({deltaQuery:'1'})
+					form = modal.$body.dmForm(form_file_Opts);
+					setTimeout("modal.show();",300);
 				}
 			},{
 				text : "构建",
@@ -194,6 +234,7 @@
 			} ]
 		} */
 		};
+		var form;
 		var forbidden = {
 			type : 'radioGroup',
 			name : 'forbidden',
@@ -260,11 +301,87 @@
 					required : "必须填写"
 				}
 			}, {
-				type : 'text',//类型
+				type : 'select',
+				name : 'datasource',
+				id : 'datasource',
+				label : '数据源',
+				cls : 'input-xlarge',
+				handle:function(d){
+					var id=$(d).val();
+					form.loadDataRemote("tableName","../getTables?dataSourceName="+id);
+					//form.loadDataRemote("datasourceSchema","../getSchema?dataSourceName="+id);
+				},
+				items : [{text:'请选择',value:""}],
+				itemsUrl : "../dataSource/loadAll"
+			} /* ,{
+				type : 'select',
+				name : 'datasourceSchema',
+				id : 'datasourceSchema',
+				label : '数据库',
+				cls : 'input-xlarge',
+				handle:function(d){
+					var schemaName=$(d).val();
+					var id=$("#datasource").val();
+					form.loadDataRemote("tableName","../getTables?dataSourceName="+id+"&schemaName="+schemaName);
+				},
+				items : [],
+			} */ ,{
+				type : 'select',//类型
 				name : 'tableName',//name
 				id : 'tableName',//id
 				label : '数据表',//左边label
+				multiple:"multiple",
 				cls : 'input-xlarge',
+				handle:function(d){
+					var id=$("#datasource").val();
+					//var schemaName= $("#datasourceSchema").val();
+					var tableName =	$(d).val();
+					var url ="../getColumn?dataSourceName="+id+"&tableName="+tableName;
+					$(d).parent().find(".help-inline").remove();
+					$(d).parent().append('<span class="help-inline">'+tableName+'</span>');
+		            var ele = $("#idFiled");
+		            ele.html('<option value="">请选择</option>');
+		            var ele1 = $("#titleFiled");
+		            ele1.html('<option value="">请选择</option>');
+		            var ele2 = $("#urlFiled");
+		            ele2.html('<option value="">请选择</option>');
+		            var ele3 = $("#contentFiled");
+		   		    ele3.html('<option value="">请选择</option>');
+		            var ele4 = $("#authorFiled");
+		            ele4.html('<option value="">请选择</option>');
+		            var ele5 = $("#channelFiled");
+		            ele5.html('<option value="">请选择</option>');
+		            var ele6 = $("#publishtimeFiled");
+		            ele6.html('<option value="">请选择</option>');
+		            var ele7 = $("#onFileds");
+		            ele7.html('<option value=""></option>');
+		            $.ajax({
+		                type: "POST",
+		                dataType: "json",
+		                url: url,
+		                success: function (options) {
+		                    $.each(options, function (i, option) {
+		                        /* var opt = $.tmpl(optionTmpl, {
+		                            "value_": option.value,
+		                            "text_": option.text,
+		                            "selected": (option.selected ? "selected"
+		                                : "")
+		                        }); */
+		                        var opt = '<option value="'+option.value+'">'+option.text+'</option>'
+		                        //alert(opt);
+		                        ele.append(opt);
+		                        ele1.append(opt);
+		                        ele2.append(opt);
+		                        ele3.append(opt);
+		                        ele4.append(opt);
+		                        ele5.append(opt);
+		                        ele6.append(opt);
+		                        ele7.append(opt);
+		                    });
+		                }
+		            });
+				},
+				items : [],
 				rule : {
 					required : true
 				},
@@ -272,19 +389,12 @@
 					required : "请输入"
 				}
 			}, {
-				type : 'select',
-				name : 'datasource',
-				id : '数据源',
-				label : '类型',
-				cls : 'input-xlarge',
-				items : [],
-				itemsUrl : "../dataSource/loadAll"
-			}, {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'idFiled',//name
 				id : 'idFiled',//id
 				label : '主键',//左边label
 				cls : 'input-xlarge',
+				items:[],
 				rule : {
 					required : true
 				},
@@ -292,11 +402,12 @@
 					required : "请输入"
 				}
 			}, {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'titleFiled',//name
 				id : 'titleFiled',//id
 				label : '标题字段',//左边label
 				cls : 'input-xlarge',
+				items:[],
 				rule : {
 					required : true
 				},
@@ -304,11 +415,12 @@
 					required : "必须填写"
 				}
 			},  {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'urlFiled',//name
 				id : 'urlFiled',//id
 				label : 'url链接字段',//左边label
 				cls : 'input-xlarge',
+				items:[],
 				rule : {
 					required : true
 				},
@@ -316,11 +428,12 @@
 					required : "必须填写"
 				}
 			},  {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'contentFiled',//name
 				id : 'contentFiled',//id
 				label : '内容字段',//左边label
 				cls : 'input-xlarge',
+				items:[],
 				rule : {
 					required : true
 				},
@@ -328,30 +441,41 @@
 					required : "必须填写"
 				}
 			},   {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'authorFiled',//name
 				id : 'authorFiled',//id
 				label : '作者/来源字段',//左边label
+				items:[],
 				cls : 'input-xlarge'
 			},  {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'channelFiled',//name
 				id : 'channelFiled',//id
 				label : '所属栏目字段',//左边label
+				items:[],
 				cls : 'input-xlarge'
 			},  {
-				type : 'text',//类型
+				type : 'select',//类型
 				name : 'publishtimeFiled',//name
 				id : 'publishtimeFiled',//id
 				label : '发布时间字段',//左边label
+				items:[],
 				cls : 'input-xlarge'
-			}, /*  {
+			},  {
+				type : 'select',//类型
+				name : 'onFileds',//name
+				id : 'onFileds',//id
+				label : '两个表的关联字段',//左边label
+				cls : 'input-xlarge',
+				multiple:"multiple",
+				items:[]
+			}, {
 				type : 'text',//类型
-				name : 'selectFileds',//name
-				id : 'selectFileds',//id
-				label : '其他字段',//左边label
+				name : 'whereFiled',//name
+				id : 'whereFiled',//id
+				label : '条件过滤',//左边label
 				cls : 'input-xlarge'
-			}, */  {
+			}/* , {
 				type : 'textarea',//类型
 				name : 'query',//name
 				id : 'query',//id
@@ -375,11 +499,11 @@
 				message : {
 					required : "请输入"
 				}
-			} ]
+			} */ ]
 		};
 		var form_file_Opts = {
-				id : "channel_form",//表单id
-				name : "channel_form",//表单名
+				id : "chnel_form",//表单id
+				name : "chnel_form",//表单名
 				method : "post",//表单method
 				action : "./insert",//表单action
 				ajaxSubmit : true,//是否使用ajax提交表单
@@ -391,7 +515,6 @@
 				ajaxSuccess : function() {
 					modal.hide();
 					grid.reload();
-					channelTree.reAsyncChildNodes(null, "refresh");
 				},
 				submitText : "保存",//保存按钮的文本
 				showReset : true,//是否显示重置按钮
@@ -402,7 +525,6 @@
 					text : '关闭',
 					handle : function() {
 						modal.hide();
-						channelTree.reAsyncChildNodes(null, "refresh");
 					}
 				} ],
 				buttonsAlign : "center",
@@ -427,19 +549,7 @@
 					message : {
 						required : "必须填写"
 					}
-				}, {
-					type : 'text',//类型
-					name : 'tableName',//name
-					id : 'tableName',//id
-					label : '数据表',//左边label
-					cls : 'input-xlarge',
-					rule : {
-						required : true
-					},
-					message : {
-						required : "请输入"
-					}
-				}, {
+				},   {
 					type : 'select',
 					name : 'pid',
 					id : 'pid',
@@ -460,6 +570,7 @@
 					label : '数据源',
 					cls : 'input-xlarge',
 					items : [],
+					onchange:"onchange();",
 					itemsUrl : "../dataSource/loadAll",
 						rule : {
 							required : true
@@ -467,7 +578,7 @@
 						message : {
 							required : "必须填写"
 						}
-				},  {
+				}/*,  {
 					type : 'text',//类型
 					name : 'urlFiled',//name
 					id : 'urlFiled',//id
@@ -479,7 +590,7 @@
 					message : {
 						required : "必须填写"
 					}
-				}/* ,  {
+				} ,  {
 					type : 'textarea',//类型
 					name : 'query',//name
 					id : 'query',//id
@@ -571,6 +682,26 @@
 				}
 			});
 			return false;
+		}
+		function updateStatus(id,state){
+			bootbox.confirm(state=='1'?"确定禁用吗?":"确定启用?启用后请重新构建才能生效.", function(result) {
+				if (result) {
+					$.ajax({
+						type : "POST",
+						dataType : "json",
+						url : "./updateStatus?id="+id,
+						success : function(data) {
+							if(data.status=='0')
+								bootbox.alert(data.msg);
+							
+							grid.reload();
+						},
+						error :function(){
+							alert("操作异常");
+						}
+					});
+				}
+			});
 		}
 		jQuery(document).ready(function() {
 			grid = $("#grid").dmGrid(options);

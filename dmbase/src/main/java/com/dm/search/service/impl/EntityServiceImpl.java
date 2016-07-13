@@ -54,5 +54,18 @@ public class EntityServiceImpl implements EntityService {
 		PageInfo<SearchEntity> page = new PageInfo<SearchEntity>(list);
 		return page;
 	}
+	@Override
+	public List<SearchEntity> list(
+			Map searchMap) {
+		List<SearchEntity> list = this.entityMapper.listByArg(searchMap);
+		return list;
+	}
+	@Override
+	public boolean updateStatus(Integer id) {
+		SearchEntity entity = this.entityMapper.selectByPrimaryKey(id);
+		entity.setStatus(entity.getStatus().equals("1")?"0":"1");
+		int sta = this.entityMapper.updateByPrimaryKey(entity);
+		return sta!=0;
+	}
 
 }

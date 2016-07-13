@@ -26,6 +26,7 @@ import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mobile.device.Device;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -54,7 +55,14 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 	SearchDataSourceMapper searchDataSourceMapper;
 	@Autowired
 	SearchEntityMapper searchEntityMapper;
-
+	@Value("${solr.templatedir}")
+	String templatePath;// = "D:\\workspace\\space2\\dmbase_git\\dmbase\\src\\main\\webapp\\template\\solr\\";
+	@Value("${solr.templateName}")
+	String templateName;// ="db-data-config-cms.ftl";
+	@Value("${solr.xmldir}")
+	String xmldir;// = "D:\\workspace\\space-note\\solr-5.3.1\\server\\solr\\cms_core\\conf\\";
+	@Value("${solr.xmlFileName}")
+	String xmlFile ;// ="db-data-config-cms.xml";
 	@Override
 	public SearchConfig findConfig(String id) {
 		return searchConfigMapper.selectByPrimaryKey(id);
@@ -200,11 +208,11 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 	public Map searchResults(String textValue, Integer pageNum,
 			Integer pageSize, String sortField, String entity, Integer days,
 			Device device) {
-		if (!StringUtils.hasText(entity)) {
+		/*if (!StringUtils.hasText(entity)) {
 			entity = "cmsContent";
-		}
-		if (entity.length() < 3)
-			entity = "cmsContent";
+		}*/
+		/*if (entity.length() < 3)
+			entity = "cmsContent";*/
 		SearchConfig searchConfig = searchConfigMapper
 				.selectByPrimaryKey("123");
 		SolrClient solrClient = new HttpSolrClient(searchConfig.getIpAddress()
@@ -217,10 +225,10 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 			map.put("total", 0);
 			return map;
 		}
-		String highlightTitle = "name";
-		String highlightContent = "introduce";
-		String highlightActor = "author";
-		if (entity.equals("cmsContent")) {
+		String highlightTitle = "title";
+		String highlightContent = "content";
+		String highlightActor = "origin";
+		/*if (entity.equals("cmsContent")) {
 			highlightTitle = "title";
 			highlightContent = "content";
 			highlightActor = "origin";
@@ -230,13 +238,15 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 		}
 		if (entity.equals("cmsVideo")) {
 			highlightActor = "director";
-		}
+		}*/
 		SolrQuery query = new SolrQuery();
 		String[] field = { "id", highlightTitle, highlightContent,
 				highlightActor, "publishDate", "displayName", "url",
 				"image_url" };
 		query.setFields(field);
-		String ent = entity.toLowerCase().substring(3);
+		String ent = "*";
+		if(entity!=null&&!entity.equals(""))
+			ent = entity;
 		if (days != null)
 			query.addFilterQuery("id:" + "*_" + ent
 					+ " AND publishDate:[NOW/DAY-" + days + "DAY TO *]");
@@ -374,11 +384,8 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 		Map map = new HashMap();
 		map.put("dataSources", dataSources);
 		map.put("entitys", entitys);
-		String baseDir = "D:\\workspace\\space2\\dmbase\\src\\main\\webapp\\template\\solr\\";
-		String templatePathName="db-data-config-cms.ftl";
-		String xmldir = "D:\\workspace\\space-note\\solr-5.3.1\\server\\solr\\cms_core\\conf\\";
-		String xmlFile="db-data-config-cms.xml";
-		this.xml(baseDir, templatePathName, xmldir, xmlFile, map);
+		//TODO 改成配置文件
+		this.xml(templatePath, templateName, xmldir, xmlFile, map);
 		return 1;
 	}
 
