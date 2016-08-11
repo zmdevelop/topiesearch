@@ -145,7 +145,7 @@
 				<div data-row="11" class="row">
 					<div class="col-md-12">
 						<div class="form-group">
-							<label class="control-label col-md-3">名称</label>
+							<label class="control-label col-md-3">过滤条件</label>
 							<div class="col-md-5">
 							<div class="input-group">
 								<input showicon="false" id="whereFiled" name="whereFiled"

@@ -31,7 +31,7 @@ public class SearchEntity {
 
 	private String whereFiled;
 
-	private Boolean transformerHtml;
+	private Boolean transformerHtml=true;
 
 	private String deltaQuery;
 

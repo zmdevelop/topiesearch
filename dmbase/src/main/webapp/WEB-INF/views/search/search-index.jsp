@@ -146,31 +146,31 @@
 											<div class="form-group">
 													<div class="col-md-8">
 														<select name="command" class="form-control" id="command">
-															<option>full-import</option>
-															<option>delta-import</option>
+															<option value="delta-import">增量索引</option>
+															<option value="full-import">重建索引</option>
 														</select>
 													</div>
-													<label class="control-label">Command</label>
+													<label class="control-label"></label>
 												</div>
 												<div class="form-group">
 													<div class="col-md-6">
 														<input
 														name="clean" id="clean" value="true" checked="checked"
-														type="checkbox"> Clean
+														type="checkbox"> 清理
 													</div>
 												</div>
 												<div class="form-group">
 													<div class="col-md-6">
 														<input
 														name="commit" id="commit" value="true" checked="checked"
-														type="checkbox"> Commit
+														type="checkbox">提交
 													</div>
 												</div>
 												<div class="form-group">
 													<div class="col-md-6">
 														<input
 														name="optimize" id="optimize" value="true" type="checkbox">
-														Optimize
+														优化
 													</div>
 												</div>
 													
@@ -190,15 +190,15 @@
 															<strong></strong>
 															<div class="details" style="display: block;">
 																<div class="docs" id="docs_imp">
-																	<abbr title="Total Requests made to DataSource">Requests</abbr>:
-																	0 , <abbr title="Total Rows Fetched">Fetched</abbr>:
+																	<abbr title="请求数据次数">请求</abbr>:
+																	0 , <abbr title="所查到的数据条数">查找</abbr>:
 																	0 , <abbr
-																		title="Total Documents Skipped">Skipped</abbr>: 0, <abbr
-																		title="Total Documents Processed">Processed</abbr>: 0
+																		title="跳过的数据条数">跳过</abbr>: 0, <abbr
+																		title="处理的数据条数">处理</abbr>: 0
 																	
 																</div>
 																<div class="dates" id="dates_imp">
-																	<abbr title="Full Dump Started">Last Update</abbr>: <abbr
+																	<abbr title="最后更新时间">最后更新时间</abbr>: <abbr
 																		class="time" ></abbr>
 																</div>
 															</div>
@@ -390,13 +390,25 @@
 		                    'Skipped' : 'Total Documents Skipped',
 		                    'Processed' : 'Total Documents Processed'
 		                  };
+		                  var document_config_cn = {
+				                    'Requests' : '共请求的次数',
+				                    'Fetched' : '查到的数据总条数',
+				                    'Skipped' : '跳过数据的总条数',
+				                    'Processed' : '处理数据的总条数'
+				                  };
+		                  var document_config_k_cn = {
+				                    'Requests' : '请求',
+				                    'Fetched' : '查询',
+				                    'Skipped' : '跳过',
+				                    'Processed' : '处理'
+				                  };
 
 		                  var document_details = [];
 		                  for( var key in document_config )
 		                  {
 		                    var value = parseInt( response.statusMessages[document_config[key]], 10 );
 
-		                    var detail = '<abbr title="' + document_config[key] + '">' + key + '</abbr>: ' +   value ;
+		                    var detail = '<abbr title="' + document_config_cn[key] + '">' + document_config_k_cn[key] + '</abbr>: ' +   value ;
 		                    /* if( elapsed_seconds && 'skipped' !== key.toLowerCase() )
 		                    {
 		                      detail += ' <span>(' +  Math.round( value / elapsed_seconds ) + '/s)</span>'
@@ -415,6 +427,11 @@
 		                      'Aborted' : 'Aborted',
 		                      'Rolledback' : 'Rolledback'
 		                  };
+		                  var dates_config = {
+			                      'Last Update' : 'Full Dump Started'//,
+// 			                      'Aborted' : 'Aborted',
+// 			                      'Rolledback' : 'Rolledback'
+			               };
 
 		                  var dates_details = [];
 		                  for( var key in dates_config )
@@ -423,8 +440,14 @@
 
 		                    if( value )
 		                    {
-		                      var detail = '<abbr title="' + dates_config[key] + '">' + key + '</abbr>: '
-		                                 + '<abbr class="time">' +  value + '</abbr>';
+		                      var detail = '<abbr title="' 
+		                      //+ dates_config[key] 
+		                      +'最后更新时间'
+		                      + '">' 
+		                      //+ key 
+		                      +'最后更新时间'
+		                      + '</abbr>: '
+		                      + '<abbr class="time">' +  value + '</abbr>';
 		                      dates_details.push( detail );                      
 		                    }
 		                  };

@@ -370,7 +370,12 @@ public class SearchConfigServiceImpl implements SearchConfigService {
 			}
 		} else {
 			content = (String) solrDocument.getFieldValue(key);
+			int length =200;
+			if(content!=null && content.length()>length){
+				content = content.substring(0,length);
+			}
 		}
+		
 		return content;
 	}
 
